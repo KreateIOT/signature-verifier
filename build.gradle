@@ -60,10 +60,20 @@ bintray {
         name = 'signature-verifier'
         userOrg = 'kreateiot'
         licenses = ['Apache-2.0']
-        desc = "A library containing Java classes that help you build verification signature for KreateIOT."
+        desc = "A library containing Java classes that help you build verification signature for KreateIOT API"
         websiteUrl = "https://github.com/KreateIOT/signature-verifier"
         issueTrackerUrl = "https://github.com/KreateIOT/signature-verifier/issues"
         vcsUrl = 'https://github.com/KreateIOT/signature-verifier.git'
+        publicDownloadNumbers = true
+        version {
+			name = 'signature-verifier'
+			desc = 'A library containing Java classes that help you build verification signature for KreateIOT API'
+			licenses = ['Apache-2.0']
+			vcsTag = '1.0.0'
+			websiteUrl = "https://github.com/KreateIOT/signature-verifier"
+	        issueTrackerUrl = "https://github.com/KreateIOT/signature-verifier/issues"
+	        vcsUrl = 'https://github.com/KreateIOT/signature-verifier.git'
+		}
     }
 }
 
