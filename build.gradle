@@ -1,12 +1,40 @@
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-    mavenCentral()
+buildscript {
+    repositories {
+        jcenter()
+    }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+
+group = "com.kreateiot"
+version = "1.0.0"
+
+allprojects {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	apply plugin: 'maven'
+	apply plugin: 'maven-publish'
+	apply plugin: 'java'
+}
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+        	from components.java
+        	groupId "com.kreateiot"
+            artifactId "signature-verifier"
+            version "1.0.0"
+        }
+        sources(MavenPublication) {
+            artifactId "signature-verifier"
+            artifact sourcesJar
+        }
+    }
+}
 
 dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.6.2'
@@ -14,4 +42,31 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
 
     testCompile 'junit:junit:4.12'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+bintray {
+	user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+    dryRun = false
+    publish = true
+    publications = ["jar", "sources"]
+    pkg {
+        repo = 'maven'
+        name = 'signature-verifier'
+        userOrg = 'kreateiot'
+        licenses = ['Apache-2.0']
+        desc = "A library containing Java classes that help you build verification signature for KreateIOT."
+        websiteUrl = "https://github.com/KreateIOT/signature-verifier"
+        issueTrackerUrl = "https://github.com/KreateIOT/signature-verifier/issues"
+        vcsUrl = 'https://github.com/KreateIOT/signature-verifier.git'
+    }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.4'
 }
